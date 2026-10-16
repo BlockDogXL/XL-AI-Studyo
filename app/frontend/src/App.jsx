@@ -7,6 +7,7 @@ import Settings from "./components/Settings";
 import TextChat from "./components/TextChat";
 import SpeechTranscriber from "./components/SpeechTranscriber";
 import TextToSpeech from "./components/TextToSpeech";
+import ExtTabs from "./ext/ExtTabs"; // DDYZ-FORK
 import { cleanupCandidates, formatBytes, getCleanupCandidates, getDiagnostics, getHardwareSpecs, getHealth, getTelemetry, getBackendOptions, getBackendStatus, listGeneratedOutputs, listLlmConversations, saveLlmConversation, deleteLlmConversation, listSpeechTranscriptions, deleteSpeechTranscription, listTtsOutputs, deleteTtsOutput, stopServer } from "./services/api";
 import "./App.css";
 
@@ -856,6 +857,7 @@ function App() {
             setFontSize={setFontSize}
           />
         </div>
+        <ExtTabs activeTab={activeTab} /> {/* DDYZ-FORK */}
       </div>
 
       {dialog && (

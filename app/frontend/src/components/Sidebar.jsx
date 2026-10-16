@@ -1,5 +1,6 @@
 import React, { memo } from "react";
 import { Image, FolderDown, MessageSquare, Mic, Settings, Terminal, ChevronDown, ChevronUp, Trash2, Volume2 } from "lucide-react";
+import ExtNavItems from "../ext/ExtNavItems"; // DDYZ-FORK
 
 function formatSidebarDate(value) {
   const date = new Date(value);
@@ -411,6 +412,7 @@ function Sidebar({
             )}
           </div>
 
+          <ExtNavItems activeTab={activeTab} setActiveTab={setActiveTab} /> {/* DDYZ-FORK */}
           <div
             className={`nav-item ${activeTab === "models" ? "active" : ""}`}
             onClick={() => setActiveTab("models")}
