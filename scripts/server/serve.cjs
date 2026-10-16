@@ -11,6 +11,7 @@ const os       = require("os");
 const path     = require("path");
 const { spawn, spawnSync, execSync, exec, execFile } = require("child_process");
 const { comprehensiveWebSearch } = require("../search/core");
+let xlExt = null; try { xlExt = require("../../ext/server/index.cjs"); } catch (err) { console.warn("  [xl-ext] yuklenemedi:", err.message); } // DDYZ-FORK
 
 // HTTP keep-alive agent for llama-server (eliminates TCP handshake per request)
 const llmHttpAgent = new http.Agent({
@@ -7358,6 +7359,7 @@ async function getLlmfitRecommendations(useCase = "chat", limit = 10) {
     }
   }
 
+  if (xlExt && req.url.startsWith("/api/ext/") && await xlExt.handle(req, res)) return; // DDYZ-FORK
   if (req.url.startsWith("/api/")) {
     return json(res, 404, { ok: false, error: "Unknown API endpoint" });
   }
