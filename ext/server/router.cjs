@@ -29,12 +29,16 @@ function createRouter() {
       if (route.method !== req.method) continue;
       const match = route.regex.exec(url.pathname);
       if (!match) continue;
-      const params = {};
-      route.names.forEach((name, i) => {
-        params[name] = decodeURIComponent(match[i + 1]);
-      });
       const query = Object.fromEntries(url.searchParams);
       try {
+        const params = {};
+        route.names.forEach((name, i) => {
+          try {
+            params[name] = decodeURIComponent(match[i + 1]);
+          } catch {
+            throw new HttpError(400, `Gecersiz adres parametresi: ${name}`);
+          }
+        });
         const body = req.method === "POST" ? await readJsonBody(req) : undefined;
         const result = await route.fn({ req, res, params, query, body });
         sendJson(res, 200, result);

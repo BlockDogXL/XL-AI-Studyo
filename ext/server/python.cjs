@@ -31,6 +31,7 @@ function freePort() {
 async function waitHealthy(port, proc, timeoutMs) {
   const deadline = Date.now() + timeoutMs;
   while (Date.now() < deadline) {
+    if (proc.spawnError) throw proc.spawnError;
     if (proc.exitCode !== null || proc.signalCode !== null) {
       throw new Error(`Isci baslarken kapandi (cikis kodu ${proc.exitCode})`);
     }
@@ -47,7 +48,7 @@ async function waitHealthy(port, proc, timeoutMs) {
 
 function stopProc(proc) {
   return new Promise((resolve) => {
-    if (proc.exitCode !== null || proc.signalCode !== null) return resolve();
+    if (proc.spawnError || proc.exitCode !== null || proc.signalCode !== null) return resolve();
     proc.once("exit", () => resolve());
     proc.kill();
   });
@@ -58,6 +59,12 @@ async function spawnWorker({ python, script, name, timeoutMs = 20000 }) {
   const proc = spawn(python, [script, "--port", String(port)], { stdio: ["ignore", "pipe", "pipe"], windowsHide: true });
   proc.stdout.on("data", (d) => process.stdout.write(`  [xl-ext:${name}] ${d}`));
   proc.stderr.on("data", (d) => process.stderr.write(`  [xl-ext:${name}] ${d}`));
+  // Python bulunamaz veya calistirilamazsa ChildProcess 'error' yayar;
+  // dinleyici olmazsa bu tum sunucuyu kapatir.
+  proc.once("error", (err) => {
+    proc.spawnError = new Error(`Python baslatilamadi: ${python} (${err.code || err.message})`);
+    workers.delete(proc);
+  });
   workers.add(proc);
   proc.once("exit", () => workers.delete(proc));
   try {
@@ -67,6 +74,28 @@ async function spawnWorker({ python, script, name, timeoutMs = 20000 }) {
     throw err;
   }
   return { name, port, proc, stop: () => stopProc(proc) };
+}
+
+// Isciye JSON gonderir; yanit timeoutMs icinde gelmezse hata firlatir,
+// boylece takilan bir isci kuyrugu sonsuza kadar kilitlemez.
+async function callWorker(worker, route, body, { timeoutMs = 10 * 60 * 1000 } = {}) {
+  let res;
+  try {
+    res = await fetch(`http://127.0.0.1:${worker.port}${route}`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(body),
+      signal: AbortSignal.timeout(timeoutMs),
+    });
+  } catch (err) {
+    if (err && (err.name === "TimeoutError" || err.name === "AbortError")) {
+      throw new Error(`Isci ${worker.name} ${timeoutMs} ms icinde yanit vermedi (zaman asimi)`);
+    }
+    throw err;
+  }
+  const data = await res.json();
+  if (!res.ok) throw new Error((data && data.error) || `Isci hatasi (HTTP ${res.status})`);
+  return data;
 }
 
 async function stopAllWorkers() {
@@ -84,4 +113,4 @@ process.on("exit", () => {
   }
 });
 
-module.exports = { resolvePython, spawnWorker, stopAllWorkers };
+module.exports = { resolvePython, spawnWorker, callWorker, stopAllWorkers };

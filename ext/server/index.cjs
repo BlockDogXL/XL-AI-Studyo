@@ -2,9 +2,9 @@
 // serve.cjs, /api/ext/* isteklerini tek bir DDYZ-FORK satiriyla buraya devreder.
 const path = require("node:path");
 const { createRouter } = require("./router.cjs");
-const { HttpError } = require("./http.cjs");
+const { HttpError, sendJson } = require("./http.cjs");
 const { createJobQueue, builtinRunners } = require("./jobs.cjs");
-const { resolvePython, spawnWorker, stopAllWorkers } = require("./python.cjs");
+const { resolvePython, spawnWorker, callWorker, stopAllWorkers } = require("./python.cjs");
 const { loadRegistry, filterRegistry } = require("./registry.cjs");
 
 const EXT_ROOT = path.resolve(__dirname, "..");
@@ -14,6 +14,8 @@ function createExtServer({
   dataDir = path.join(EXT_ROOT, "data"),
   registryPath = path.join(EXT_ROOT, "registry", "models.json"),
   pythonResolver = () => resolvePython({ extRoot: EXT_ROOT }),
+  workerTimeoutMs = 10 * 60 * 1000,
+  maxJobs = 500,
 } = {}) {
   const router = createRouter();
 
@@ -22,8 +24,7 @@ function createExtServer({
     if (!python) throw new Error("Tasinabilir Python bulunamadi. ext/setup/setup-python betigini calistirin.");
     const worker = await spawnWorker({ python, script: path.join(EXT_ROOT, "workers", "echo_worker.py"), name: "echo" });
     try {
-      const r = await fetch(`http://127.0.0.1:${worker.port}/echo`, { method: "POST", body: JSON.stringify(params) });
-      return await r.json();
+      return await callWorker(worker, "/echo", params, { timeoutMs: workerTimeoutMs });
     } finally {
       await worker.stop();
     }
@@ -32,7 +33,7 @@ function createExtServer({
   const runners = {
     system: (task, params, ctx) => (task === "python-echo" ? pythonEcho(params) : builtinRunners.system(task, params, ctx)),
   };
-  const jobs = createJobQueue({ dataDir, runners });
+  const jobs = createJobQueue({ dataDir, runners, maxJobs });
 
   router.get("/api/ext/health", () => ({ ok: true, name: "XL AI Studyo", extVersion: EXT_VERSION }));
 
@@ -71,8 +72,23 @@ function getDefault() {
   return defaultServer;
 }
 
+// serve.cjs'in async istek isleyicisinde reddedilen bir Promise tum sunucuyu
+// kapatir; bu yuzden ext hicbir kosulda reddetmez, hatayi 500 olarak yazar.
+async function safeHandle(getServer, req, res) {
+  try {
+    return await getServer().handle(req, res);
+  } catch (err) {
+    console.error("  [xl-ext] istek islenemedi:", err && err.message);
+    if (!res.headersSent && !res.writableEnded) {
+      sendJson(res, 500, { ok: false, error: `XL AI Studyo eklentisi hatasi: ${err && err.message}` });
+    }
+    return true;
+  }
+}
+
 module.exports = {
   createExtServer,
-  handle: (req, res) => getDefault().handle(req, res),
+  safeHandle,
+  handle: (req, res) => safeHandle(getDefault, req, res),
   shutdown: () => (defaultServer ? defaultServer.shutdown() : Promise.resolve()),
 };

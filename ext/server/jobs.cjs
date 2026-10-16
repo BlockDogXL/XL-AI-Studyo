@@ -28,7 +28,7 @@ function loadJobs(file) {
   return jobs;
 }
 
-function createJobQueue({ dataDir, runners = {} }) {
+function createJobQueue({ dataDir, runners = {}, maxJobs = 500 }) {
   fs.mkdirSync(dataDir, { recursive: true });
   const file = path.join(dataDir, "jobs.jsonl");
   const allRunners = { ...builtinRunners, ...runners };
@@ -37,15 +37,36 @@ function createJobQueue({ dataDir, runners = {} }) {
   let active = null;
   let idleWaiters = [];
 
-  const persist = (job) => fs.appendFileSync(file, JSON.stringify(job) + "\n");
+  // Kayit yazilamazsa (disk dolu, dosya kilitli) is yine calisir; sunucu cokmez.
+  const persist = (job) => {
+    try {
+      fs.appendFileSync(file, JSON.stringify(job) + "\n");
+    } catch (err) {
+      console.error("  [xl-ext] is kaydi yazilamadi:", err.message);
+    }
+  };
+
+  // Bellekte ve dosyada yalnizca en yeni maxJobs is tutulur; bitmemis isler silinmez.
+  const prune = () => {
+    for (const [id, job] of jobs) {
+      if (jobs.size <= maxJobs) break;
+      if (job.status === "done" || job.status === "failed") jobs.delete(id);
+    }
+  };
 
   for (const job of jobs.values()) {
     if (job.status === "running" || job.status === "queued") {
       job.status = "failed";
       job.error = "interrupted";
       job.finishedAt = new Date().toISOString();
-      persist(job);
     }
+  }
+  prune();
+  // Acilista dosyayi her is icin tek satira indir (sikistirma).
+  try {
+    fs.writeFileSync(file, [...jobs.values()].map((j) => JSON.stringify(j) + "\n").join(""));
+  } catch (err) {
+    console.error("  [xl-ext] is kaydi sikistirilamadi:", err.message);
   }
 
   function settleIdle() {
@@ -71,6 +92,7 @@ function createJobQueue({ dataDir, runners = {} }) {
     }
     job.finishedAt = new Date().toISOString();
     persist(job);
+    prune();
     active = null;
     setImmediate(runNext);
   }
