@@ -7386,7 +7386,7 @@ server.timeout = 0; // Disable socket timeout for large model uploads/downloads
 server.listen(PORT_FRONTEND, "0.0.0.0", () => {
   console.log("");
   console.log("  ============================================================");
-  console.log("   Sansursuz Lokal AI Studyosu - DD:YZ   |  Calisiyor");
+  console.log("   XL AI Studyo   |  Calisiyor"); // XLAI-BRAND
   console.log("   Server Build: " + SERVER_BUILD);
   console.log("   Frontend : http://localhost:" + PORT_FRONTEND);
   console.log("   Image API: http://127.0.0.1:" + PORT_BACKEND);

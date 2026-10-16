@@ -1,7 +1,7 @@
 @echo off
 setlocal EnableExtensions EnableDelayedExpansion
 chcp 65001 >nul
-title Sansursuz Lokal AI Studyosu - DD:YZ
+title XL AI Studyo& rem XLAI-BRAND
 cd /d "%~dp0"
 
 set APP=%~dp0app
@@ -60,13 +60,13 @@ echo.
 echo  ============================================================
 type "%~dp0logo.txt"
 echo.
-echo       Sansursuz Lokal AI Studyosu - DD:YZ   ^|  %SETUP_MODE%
+echo       XL AI Studyo   ^|  %SETUP_MODE%& rem XLAI-BRAND
 echo  ============================================================
 echo.
 if "%SETUP_MODE%"=="Ilk Kurulum" (
     echo  Bu ilk calistirmeniz gibi gorunuyor. Otomatik olarak kuruluyor...
 ) else (
-    echo  Sansursuz Lokal AI Studyosu - DD:YZ baslatilmadan once hizli bir onarima ihtiyac duyuyor.
+    echo  XL AI Studyo baslatilmadan once hizli bir onarima ihtiyac duyuyor.& rem XLAI-BRAND
 )
 if not "%SETUP_REASON%"=="" echo  Neden: %SETUP_REASON%
 echo  Modeller kurulum sirasinda indirilmez. Uygulama icinden indirin veya ice aktarin.
@@ -96,7 +96,7 @@ echo.
 echo  ============================================================
 type "%~dp0logo.txt"
 echo.
-echo       Sansursuz Lokal AI Studyosu - DD:YZ   ^|  Baslatiliyor...
+echo       XL AI Studyo   ^|  Baslatiliyor...& rem XLAI-BRAND
 echo  ============================================================
 echo.
 
@@ -111,7 +111,7 @@ for /f "tokens=5" %%a in ('netstat -aon 2^>nul ^| findstr ":8080 "') do taskkill
 for /f "tokens=5" %%a in ('netstat -aon 2^>nul ^| findstr ":%LLM_PORT% "') do taskkill /f /pid %%a >nul 2>nul
 
 :: Start frontend server + backend manager (serve.cjs manages sd-vulkan.exe)
-echo  Sansursuz Lokal AI Studyosu - DD:YZ baslatiliyor...
+echo  XL AI Studyo baslatiliyor...& rem XLAI-BRAND
 echo  Tarayici http://localhost:%FRONTEND_PORT% adresinde aciliyor...
 start /b cmd /c "timeout /t 2 >nul && start http://localhost:%FRONTEND_PORT%"
 

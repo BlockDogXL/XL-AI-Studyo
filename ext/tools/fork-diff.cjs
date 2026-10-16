@@ -17,21 +17,39 @@ const MARKERS = ["DDYZ-FORK", "XLAI-BRAND"];
 
 const isAllowed = (file) => ALLOWED_FILES.has(file) || ALLOWED_PREFIXES.some((p) => file.startsWith(p));
 
+// Bir hunk icinde, isaretli eklenen satirlar ayni sayida silinen satiri "karsilar"
+// (ornegin bir ismin degistirilmesi). Hunk'ta isaretsiz bir ekleme varsa
+// silinen satirlarin hicbiri karsilanmis sayilmaz.
 function classifyDiff(diffText) {
   const results = [];
   let current = null;
+  let hunk = null;
+  const closeHunk = () => {
+    if (!current || !hunk) return;
+    const uncovered = hunk.unmarkedAdded > 0 ? hunk.removed : Math.max(0, hunk.removed - hunk.markedAdded);
+    current.unmarkedLines += hunk.unmarkedAdded + uncovered;
+    hunk = null;
+  };
   for (const line of diffText.split("\n")) {
     const header = /^diff --git a\/(.+) b\/(.+)$/.exec(line);
     if (header) {
+      closeHunk();
       current = isAllowed(header[2]) ? null : { file: header[2], unmarkedLines: 0 };
       if (current) results.push(current);
       continue;
     }
     if (!current || line.startsWith("+++") || line.startsWith("---")) continue;
-    if ((line.startsWith("+") || line.startsWith("-")) && !MARKERS.some((m) => line.includes(m))) {
-      current.unmarkedLines += 1;
+    if (line.startsWith("@@")) {
+      closeHunk();
+      hunk = { removed: 0, markedAdded: 0, unmarkedAdded: 0 };
+      continue;
     }
+    if (!hunk) continue;
+    const marked = MARKERS.some((m) => line.includes(m));
+    if (line.startsWith("+")) hunk[marked ? "markedAdded" : "unmarkedAdded"] += 1;
+    else if (line.startsWith("-") && !marked) hunk.removed += 1;
   }
+  closeHunk();
   return results;
 }
 

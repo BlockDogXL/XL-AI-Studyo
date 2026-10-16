@@ -42,6 +42,21 @@ test("unmarked added and removed lines are counted", () => {
   assert.equal(app.unmarkedLines, 2);
 });
 
+test("a line replaced by a marked line is not counted", () => {
+  const rename = `diff --git a/linux.sh b/linux.sh
+--- a/linux.sh
++++ b/linux.sh
+@@ -229 +229 @@
+-echo "  Eski Ad"
++echo "  Yeni Ad" # XLAI-BRAND
+@@ -300,2 +300,1 @@
+-silinen1
+-silinen2
++yeni # XLAI-BRAND
+`;
+  assert.deepEqual(classifyDiff(rename), [{ file: "linux.sh", unmarkedLines: 1 }]);
+});
+
 test("ext/ and allowed files are not listed", () => {
   const files = classifyDiff(diff).map((f) => f.file);
   assert.ok(!files.includes("ext/server/index.cjs"));

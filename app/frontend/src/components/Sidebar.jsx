@@ -39,8 +39,8 @@ function Sidebar({
       <div>
         {/* Sidebar Header */}
         <div className="sidebar-logo">
-          <img className="sidebar-logo-icon" src="/logo.png" alt="Sansursuz Lokal AI Studyosu - DD:YZ logosu" />
-          <span className="sidebar-logo-text">Sansursuz Lokal AI Studyosu - DD:YZ</span>
+          <img className="sidebar-logo-icon" src="/logo.png" alt="XL AI Studyo logosu" /> {/* XLAI-BRAND */}
+          <span className="sidebar-logo-text">XL AI Studyo</span> {/* XLAI-BRAND */}
         </div>
 
         {/* Sidebar Navigation Links (Material 3 style) */}
