@@ -4,6 +4,7 @@ const path = require("node:path");
 const { createRouter } = require("./router.cjs");
 const { HttpError } = require("./http.cjs");
 const { createJobQueue } = require("./jobs.cjs");
+const { loadRegistry, filterRegistry } = require("./registry.cjs");
 
 const EXT_ROOT = path.resolve(__dirname, "..");
 const EXT_VERSION = "0.1.0";
@@ -30,6 +31,12 @@ function createExtServer({
     const job = jobs.get(params.id);
     if (!job) throw new HttpError(404, "Is bulunamadi");
     return { ok: true, job };
+  });
+
+  router.get("/api/ext/models/registry", ({ query }) => {
+    const commercial = query.commercial === undefined ? undefined : query.commercial === "true";
+    const models = filterRegistry(loadRegistry(registryPath), { commercial, module: query.module });
+    return { ok: true, models };
   });
 
   return {
