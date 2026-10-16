@@ -75,16 +75,20 @@ test("workers do not outlive the Node process", { skip: !SYSTEM_PY || process.pl
   const out = spawnSync(process.execPath, [child], { encoding: "utf8", timeout: 30000 });
   const pid = Number(out.stdout.trim());
   assert.ok(pid > 0, out.stderr);
-  const deadline = Date.now() + 2000;
-  let alive = true;
-  while (Date.now() < deadline) {
+  // Olmus ama henuz toplanmamis (zombi, durum "Z") bir surec calismiyordur;
+  // konteynerde PID 1 gercek bir init olmadigindan toplama gecikebilir.
+  const state = () => {
     try {
-      process.kill(pid, 0);
+      return /^State:\s+(\S)/m.exec(fs.readFileSync(`/proc/${pid}/status`, "utf8"))[1];
     } catch {
-      alive = false;
-      break;
+      return "gone";
     }
+  };
+  const deadline = Date.now() + 5000;
+  let last = state();
+  while (Date.now() < deadline && last !== "gone" && last !== "Z") {
     await new Promise((r) => setTimeout(r, 100));
+    last = state();
   }
-  assert.equal(alive, false, `worker ${pid} still alive`);
+  assert.ok(last === "gone" || last === "Z", `worker ${pid} still running (state ${last})`);
 });
