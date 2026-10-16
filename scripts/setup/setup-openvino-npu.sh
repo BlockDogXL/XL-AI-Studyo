@@ -12,7 +12,7 @@ PYTHON_BIN="$VENV_DIR/bin/python"
 
 echo ""
 echo "  ============================================================"
-echo "   Sansursuz Lokal AI Studyosu - DD:YZ - Linux OpenVINO NPU Setup"
+echo "   XL AI Studyo - Linux OpenVINO NPU Setup" # XLAI-BRAND
 echo "  ============================================================"
 echo ""
 

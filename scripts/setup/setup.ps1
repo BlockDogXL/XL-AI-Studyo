@@ -15,7 +15,7 @@ $distDir     = Join-Path $appDir   "dist"
 function Print-Header {
     Write-Host ""
     Write-Host "  ============================================================" -ForegroundColor Cyan
-    Write-Host "   Sansursuz Lokal AI Studyosu - DD:YZ   -  Ilk Kurulum" -ForegroundColor Cyan
+    Write-Host "   XL AI Studyo   -  Ilk Kurulum" -ForegroundColor Cyan # XLAI-BRAND
     Write-Host "   %100 Kendine Yeterli  |  Sistem Kurulumu Gerektirmez" -ForegroundColor DarkCyan
     Write-Host "  ============================================================" -ForegroundColor Cyan
     Write-Host ""
@@ -254,7 +254,7 @@ if (-not $nodeReady) {
     }
 
     if (-not $nodeReady) {
-        Print-Fail "Portable Node.js install is incomplete or corrupted. Close any running Sansursuz Lokal AI Studyosu - DD:YZ windows, delete app/tools/node-win, then run setup again."
+        Print-Fail "Portable Node.js install is incomplete or corrupted. Close any running XL AI Studyo windows, delete app/tools/node-win, then run setup again." # XLAI-BRAND
         Read-Host; exit 1
     }
 
@@ -554,7 +554,7 @@ Write-Host ""
 
 if (-not (Test-Path $npmCmd)) {
     Print-Fail "npm.cmd was not found at $npmCmd"
-    Print-Fail "Close any running Sansursuz Lokal AI Studyosu - DD:YZ windows, delete app/tools/node-win, then run setup again."
+    Print-Fail "Close any running XL AI Studyo windows, delete app/tools/node-win, then run setup again." # XLAI-BRAND
     Read-Host; exit 1
 }
 

@@ -3471,7 +3471,7 @@ function requestHttpsJson(url, timeoutMs = 30000) {
     const req = https.get(url, {
       headers: {
         "Accept": "application/json",
-        "User-Agent": "Uncensored-AI-Studio/1.0",
+        "User-Agent": "XL-AI-Studyo/1.0 (+https://github.com/BlockDogXL/XL-AI-Studyo)", // XLAI-BRAND
       },
       timeout: timeoutMs,
     }, (res) => {
@@ -4929,7 +4929,7 @@ function startImageBackendDownload(backendId, redirectCount = 0, redirectUrl = "
   const client = url.startsWith("https") ? https : http;
   const request = client.get(url, {
     headers: {
-      "User-Agent": "Sansursuz-Lokal-AI-Studyosu-DDYZ/1.0 (+https://www.youtube.com/@derinedaliyoruzyapayzeka)",
+      "User-Agent": "XL-AI-Studyo/1.0 (+https://github.com/BlockDogXL/XL-AI-Studyo)", // XLAI-BRAND
       "Accept": "application/zip, application/octet-stream, */*",
     },
   }, (response) => {
@@ -5130,7 +5130,7 @@ function startModelDownload(url, overrideFilename = null, targetDir = MODELS, ki
   const client = url.startsWith("https") ? https : http;
   const request = client.get(url, {
     headers: {
-      "User-Agent": "Sansursuz-Lokal-AI-Studyosu-DDYZ/1.0 (+https://www.youtube.com/@derinedaliyoruzyapayzeka)",
+      "User-Agent": "XL-AI-Studyo/1.0 (+https://github.com/BlockDogXL/XL-AI-Studyo)", // XLAI-BRAND
       "Accept": "application/octet-stream, application/x-safetensors, */*",
       "Referer": "https://huggingface.co/",
       ...(process.env.HF_TOKEN ? { "Authorization": `Bearer ${process.env.HF_TOKEN}` } : {}),
