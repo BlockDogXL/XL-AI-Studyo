@@ -12,7 +12,7 @@ APP_DIR="$ROOT_DIR/app"
 
 echo ""
 echo "  ============================================================"
-echo "   Sansursuz Lokal AI Studyosu - DD:YZ sifirlaniyor..."
+echo "   XL AI Studyo sifirlaniyor..." # XLAI-BRAND
 echo "  ============================================================"
 echo ""
 

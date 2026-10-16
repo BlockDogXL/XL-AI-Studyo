@@ -148,6 +148,7 @@ fi
 if [[ ! -f "$DIST_INDEX" ]]; then
   SETUP_REASON="On yuz derlemesi eksik."
 fi
+if [[ -f "$DIST_INDEX" ]] && ! grep -q "xlai-ui-1" "$DIST_INDEX"; then SETUP_REASON="Arayuz guncellendi, yeniden derlenecek."; fi # DDYZ-FORK
 
 if [[ ! -x "$BACKEND_PATH" ]]; then
   SETUP_REASON="No macOS Metal backend binary is installed."
@@ -167,13 +168,13 @@ if [[ -n "$SETUP_REASON" ]]; then
   echo "  ============================================================"
   cat "$SCRIPT_DIR/logo.txt"
   echo ""
-  echo "       Sansursuz Lokal AI Studyosu - DD:YZ   |  $PLATFORM_LABEL $SETUP_MODE"
+  echo "       XL AI Studyo   |  $PLATFORM_LABEL $SETUP_MODE" # XLAI-BRAND
   echo "  ============================================================"
   echo ""
   if [[ "$SETUP_MODE" == "Ilk Kurulum" ]]; then
     echo "  This looks like your first run on macOS. Setting up automatically..."
   else
-    echo "  Sansursuz Lokal AI Studyosu - DD:YZ baslatilmadan once hizli bir onarima ihtiyac duyuyor."
+    echo "  XL AI Studyo baslatilmadan once hizli bir onarima ihtiyac duyuyor." # XLAI-BRAND
   fi
   echo "  Reason: $SETUP_REASON"
   echo "  Modeller kurulum sirasinda indirilmez. Uygulama icinden indirin veya ice aktarin."
@@ -203,7 +204,7 @@ echo ""
 echo "  ============================================================"
 cat "$SCRIPT_DIR/logo.txt"
 echo ""
-echo "       Sansursuz Lokal AI Studyosu - DD:YZ   |  Baslatiliyor..."
+echo "       XL AI Studyo   |  Baslatiliyor..." # XLAI-BRAND
 echo "  ============================================================"
 echo ""
 
@@ -222,7 +223,7 @@ elif command -v fuser >/dev/null 2>&1; then
 fi
 
 # Start the server
-echo "  Sansursuz Lokal AI Studyosu - DD:YZ baslatiliyor..."
+echo "  XL AI Studyo baslatiliyor..." # XLAI-BRAND
 export PATH="$NODE_DIR/bin:$PATH"
 export FRONTEND_PORT="$FRONTEND_PORT"
 

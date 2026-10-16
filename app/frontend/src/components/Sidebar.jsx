@@ -1,5 +1,6 @@
 import React, { memo } from "react";
 import { Image, FolderDown, MessageSquare, Mic, Settings, Terminal, ChevronDown, ChevronUp, Trash2, Volume2 } from "lucide-react";
+import ExtNavItems from "../ext/ExtNavItems"; // DDYZ-FORK
 
 function formatSidebarDate(value) {
   const date = new Date(value);
@@ -38,8 +39,8 @@ function Sidebar({
       <div>
         {/* Sidebar Header */}
         <div className="sidebar-logo">
-          <img className="sidebar-logo-icon" src="/logo.png" alt="Sansursuz Lokal AI Studyosu - DD:YZ logosu" />
-          <span className="sidebar-logo-text">Sansursuz Lokal AI Studyosu - DD:YZ</span>
+          <img className="sidebar-logo-icon" src="/logo.png" alt="XL AI Studyo logosu" /> {/* XLAI-BRAND */}
+          <span className="sidebar-logo-text">XL AI Studyo</span> {/* XLAI-BRAND */}
         </div>
 
         {/* Sidebar Navigation Links (Material 3 style) */}
@@ -411,6 +412,7 @@ function Sidebar({
             )}
           </div>
 
+          <ExtNavItems activeTab={activeTab} setActiveTab={setActiveTab} /> {/* DDYZ-FORK */}
           <div
             className={`nav-item ${activeTab === "models" ? "active" : ""}`}
             onClick={() => setActiveTab("models")}

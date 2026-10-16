@@ -98,7 +98,7 @@ function Ensure-PortablePython {
 
 Write-Host ""
 Write-Host "  ============================================================"
-Write-Host "   Sansursuz Lokal AI Studyosu - DD:YZ - OpenVINO NPU Setup"
+Write-Host "   XL AI Studyo - OpenVINO NPU Setup" # XLAI-BRAND
 Write-Host "   Portable Python runtime: app/tools/python-win"
 Write-Host "  ============================================================"
 Write-Host ""

@@ -1,0 +1,17 @@
+{
+  "version": "3.11.17",
+  "release": "20261009",
+  "source": "https://github.com/astral-sh/python-build-standalone/releases/tag/20261009",
+  "linux-x86_64": {
+    "url": "https://github.com/astral-sh/python-build-standalone/releases/download/20261009/cpython-3.11.17+20261009-x86_64-unknown-linux-gnu-install_only.tar.gz",
+    "sha256": "035b0ccfe7f3d38ab3ddab505290d200c6a265b95fbd5fac76c358751d6bb6a8"
+  },
+  "windows-x86_64": {
+    "url": "https://github.com/astral-sh/python-build-standalone/releases/download/20261009/cpython-3.11.17+20261009-x86_64-pc-windows-msvc-install_only.tar.gz",
+    "sha256": "4d307648d2fe5f8d927e10380cc33eb7afd8a34a7efe0ed786b5860b5f2d3408"
+  },
+  "macos-arm64": {
+    "url": "https://github.com/astral-sh/python-build-standalone/releases/download/20261009/cpython-3.11.17+20261009-aarch64-apple-darwin-install_only.tar.gz",
+    "sha256": "7b6068989d9b6a0e2a883352b7d0d141ce8670a61360bf4ddabac0e046a08e10"
+  }
+}

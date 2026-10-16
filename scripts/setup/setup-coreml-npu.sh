@@ -49,7 +49,7 @@ coreml_venv_ready() {
 
 echo ""
 echo "  ============================================================"
-echo "   Sansursuz Lokal AI Studyosu - DD:YZ - Apple Silicon CoreML NPU Setup"
+echo "   XL AI Studyo - Apple Silicon CoreML NPU Setup" # XLAI-BRAND
 echo "  ============================================================"
 echo ""
 
