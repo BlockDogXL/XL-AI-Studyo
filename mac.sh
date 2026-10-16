@@ -148,6 +148,7 @@ fi
 if [[ ! -f "$DIST_INDEX" ]]; then
   SETUP_REASON="On yuz derlemesi eksik."
 fi
+if [[ -f "$DIST_INDEX" ]] && ! grep -q "xlai-ui-1" "$DIST_INDEX"; then SETUP_REASON="Arayuz guncellendi, yeniden derlenecek."; fi # DDYZ-FORK
 
 if [[ ! -x "$BACKEND_PATH" ]]; then
   SETUP_REASON="No macOS Metal backend binary is installed."

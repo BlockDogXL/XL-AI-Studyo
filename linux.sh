@@ -161,6 +161,7 @@ fi
 if [[ ! -f "$DIST_INDEX" ]]; then
   SETUP_REASON="On yuz derlemesi eksik."
 fi
+if [[ -f "$DIST_INDEX" ]] && ! grep -q "xlai-ui-1" "$DIST_INDEX"; then SETUP_REASON="Arayuz guncellendi, yeniden derlenecek."; fi # DDYZ-FORK
 
 # At minimum we need CPU or Vulkan backend on Linux, and both CLI and server binaries must be executable
 CPU_SERVER_PATH="$APP_DIR/backend/linux/cpu/sd-server-cpu"

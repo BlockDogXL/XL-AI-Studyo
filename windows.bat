@@ -38,6 +38,8 @@ if not exist "%DIST%" (
     set SETUP_REASON=Arayuz derlemesi eksik.
     goto :run_setup
 )
+findstr /c:"xlai-ui-1" "%DIST%" >nul 2>nul || set SETUP_REASON=Arayuz guncellendi, yeniden derlenecek.& rem DDYZ-FORK
+if not "%SETUP_REASON%"=="" goto :run_setup& rem DDYZ-FORK
 if not exist "%LLM_CUDA_BACKEND%" if not exist "%LLM_HIP_BACKEND%" if not exist "%LLM_VULKAN_BACKEND%" if not exist "%LLM_SYCL_BACKEND%" if not exist "%LLM_CPU_BACKEND%" (
     set SETUP_REASON=llama.cpp metin motoru eksik.
     goto :run_setup
