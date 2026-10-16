@@ -57,6 +57,17 @@ test("a line replaced by a marked line is not counted", () => {
   assert.deepEqual(classifyDiff(rename), [{ file: "linux.sh", unmarkedLines: 1 }]);
 });
 
+test(".gitattributes (no comment syntax for markers) is an allowed deviation", () => {
+  const d = `diff --git a/.gitattributes b/.gitattributes
+--- a/.gitattributes
++++ b/.gitattributes
+@@ -1 +1,2 @@
+ *.sh text eol=lf
++*.bat text eol=crlf
+`;
+  assert.deepEqual(classifyDiff(d), []);
+});
+
 test("ext/ and allowed files are not listed", () => {
   const files = classifyDiff(diff).map((f) => f.file);
   assert.ok(!files.includes("ext/server/index.cjs"));

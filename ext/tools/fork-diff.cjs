@@ -8,6 +8,7 @@ const { execFileSync } = require("node:child_process");
 const ALLOWED_PREFIXES = ["ext/", "docs/", "app/frontend/src/ext/"];
 const ALLOWED_FILES = new Set([
   "README.md",
+  ".gitattributes", // yorum satiri isaret tasiyamaz; *.bat icin CRLF kurali
   "logo.txt",
   "logo.png",
   "app/frontend/public/logo.png",

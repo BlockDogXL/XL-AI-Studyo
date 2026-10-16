@@ -15,7 +15,7 @@ XL AI Stüdyo'nun bütün yeni kodu burada (sunucu) ve `app/frontend/src/ext/` a
 
 Marka (isim ve logo) değişiklikleri `XLAI-BRAND` işaretiyle ayrıca işaretlenir.
 
-DD:YZ'den bilerek farklı tutulan dosyalar: `README.md`, `logo.txt`, `logo.png`, `app/frontend/public/logo.png`, `app/frontend/package-lock.json`.
+DD:YZ'den bilerek farklı tutulan dosyalar: `README.md`, `.gitattributes` (`.bat` dosyaları CRLF satır sonuyla çıkar; LF ile cmd.exe etiketleri bulamayabiliyor), `logo.txt`, `logo.png`, `app/frontend/public/logo.png`, `app/frontend/package-lock.json`.
 
 ## Klasörler
 
