@@ -12,7 +12,7 @@
 
 ## Global Constraints
 
-- Ana koda dokunma: DD:YZ dosyalarında toplam **6** satır değişir, her biri `DDYZ-FORK` işareti taşır (`serve.cjs` 2, `Sidebar.jsx` 2, `App.jsx` 2). Bunun dışındaki tek istisnalar `README.md` (fork'un ön sayfası), `logo.txt` (başlatıcıların gösterdiği logo) ve `app/frontend/package-lock.json`.
+- Ana koda dokunma: DD:YZ dosyalarında toplam **6** satır değişir, her biri `DDYZ-FORK` işareti taşır (`serve.cjs` 2, `Sidebar.jsx` 2, `App.jsx` 2). Bunun dışındaki tek istisnalar `README.md` (fork'un ön sayfası), `logo.txt` (başlatıcıların gösterdiği logo), `logo.png` ve `app/frontend/public/logo.png` (XLAi logosu) ve `app/frontend/package-lock.json`.
 - Yeni sunucu kodu **npm bağımlılığı eklemez**; yalnızca Node.js standart kütüphanesi. (Tasarımdaki SQLite, Node 22.12'de `node:sqlite` bayraksız çalışmadığı ve `better-sqlite3` yerel derleme gerektirdiği için F1'de **JSONL dosyalarıyla** değiştirildi.)
 - `ext` API'si yalnızca **GET ve POST** kullanır; DD:YZ'nin CORS ön kontrolü yalnızca bunlara izin veriyor. (Tasarımdaki `PUT` uç noktaları `POST` olur.)
 - Çalışma verisi `ext/data/`, taşınabilir Python `ext/runtime/python/` altında durur; ikisi `ext/.gitignore` ile dışlanır. DD:YZ'nin `.gitignore`'una dokunulmaz.
@@ -238,7 +238,7 @@ app/frontend/src/ext/
 - Test: `ext/tests/fork-diff.test.cjs`
 
 **Interfaces:**
-- Produces: `node ext/tools/fork-diff.cjs [upstreamRef=upstream/main]` — `git diff --name-only <ref>` çıktısından `ext/`, `docs/`, `README.md`, `logo.txt`, `app/frontend/package-lock.json` dışındaki dosyaları listeler; her biri için `DDYZ-FORK` içermeyen değişmiş satır sayısını yazar. İzin verilmeyen bir sapma varsa çıkış kodu 1.
+- Produces: `node ext/tools/fork-diff.cjs [upstreamRef=upstream/main]` — `git diff --name-only <ref>` çıktısından `ext/`, `docs/`, `README.md`, `logo.txt`, `logo.png`, `app/frontend/public/logo.png`, `app/frontend/package-lock.json` dışındaki dosyaları listeler; her biri için `DDYZ-FORK` içermeyen değişmiş satır sayısını yazar. İzin verilmeyen bir sapma varsa çıkış kodu 1.
   - Saf fonksiyon: `classifyDiff(diffText: string): { file: string, unmarkedLines: number }[]` (birleşik diff metnini ayrıştırır; test edilebilirlik için dışa aktarılır).
 
 - [ ] **Step 1: Testleri yaz** — örnek birleşik diff metninde: `DDYZ-FORK` işaretli eklenen satır sayılmaz; işaretsiz eklenen satır `unmarkedLines: 1` verir; `ext/` altındaki dosyalar hiç listelenmez.
