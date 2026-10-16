@@ -1,7 +1,7 @@
 # XL AI Stüdyo
 
 <p align="center">
-  <img src="logo.png" alt="XL AI Stüdyo logosu" width="160" />
+  <img src="docs/assets/xlai-banner.jpg" alt="XL AI Stüdyo logosu" width="720" />
 </p>
 
 <p align="center">
