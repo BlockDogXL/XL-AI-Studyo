@@ -104,4 +104,4 @@ function createJobQueue({ dataDir, runners = {} }) {
   };
 }
 
-module.exports = { createJobQueue };
+module.exports = { createJobQueue, builtinRunners };
